@@ -30,10 +30,7 @@ export default {
       }catch (error){
         this.errorMesasge ='Erro al iniciar sesion. Por favor intente nuevamente';
       }
-    },
-    RegisterForm(){
-      this.$router.push('/register')
-  }
+    }
 
   }
 }
@@ -55,7 +52,6 @@ export default {
           <ion-input v-model="user.password" type="password"></ion-input>
         </ion-item>
         <ion-button expand="full" @click="loginForm">Login</ion-button>
-        <p>No estás Registrado? <a @click="RegisterForm">Registrate!</a></p>
         <ion-alert
            :is-open="!!errorMessage"
             @did-dismiss="() => errorMessage = ''"
@@ -81,7 +77,6 @@ export default {
 }
 
 .login-container{
-  transform: translateY(-100px);
   max-width: 400px;
   width: 100%;
   margin:auto;
@@ -102,6 +97,9 @@ a {
 a:hover {
   text-decoration: underline; 
 }
+
+
+
 
 </style>
 

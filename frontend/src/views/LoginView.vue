@@ -30,8 +30,7 @@ export default {
       }catch (error){
         this.errorMesasge ='Erro al iniciar sesion. Por favor intente nuevamente';
       }
-    }
-
+    },
   }
 }
 </script>

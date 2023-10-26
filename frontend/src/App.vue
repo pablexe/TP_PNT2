@@ -23,6 +23,7 @@ export default {
         <RouterLink to="/">Home | </RouterLink>
         <RouterLink to="/login" v-id="!estalogeado">Login  |</RouterLink>
         <RouterLink to="/about">About | </RouterLink>
+        <RouterLink to="/users">Users | </RouterLink>
         <RouterLink to="/system" v-if="estalogeado">System | </RouterLink>
         <RouterLink to="/shopping">Shopping (Cantidad: {{ getLenghtPoducts }}) | </RouterLink>
         user {{ this.usuario.email }}

@@ -4,6 +4,7 @@ import SystemView from '../views/SystemView.vue'
 import Shoppingcar from '../views/Shoppingcar.vue'
 import LoginView  from '../views/LoginView.vue'
 import UserView from '../views/UserView.vue'
+import ProductView from '../views/ProductView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,7 +15,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      
       path: '/system',
       name: 'systemview',
       component: SystemView,
@@ -34,6 +34,11 @@ const router = createRouter({
       path: '/users',
       name: 'usersview',
       component: UserView
+    },
+    {
+      path: '/product',
+      name: 'productview',
+      component: ProductView
     },
     {
       path: '/about',

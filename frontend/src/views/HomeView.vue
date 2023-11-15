@@ -24,9 +24,9 @@ data(){
     },
     async addListing(){
         try {
-          await axios.post('http://localhost:3000/api/listings', this.listing);
-          this.listing = {};
-          this.fetchListing(); 
+          await axios.post('http://localhost:3000/api/listings', this.listings);
+          this.listings = {};
+          this.fetchListings(); 
         }catch(error){
           console.error('Error al guardar publicacion', error)
         }
@@ -92,7 +92,7 @@ data(){
             <ion-label>shipping_cost</ion-label>
         </div>
         </ion-item>
-        <ion-item v-for="e in listings" :key="e._id">
+        <ion-item v-for="e in list" :key="e._id">
           <div class="item-header">
             <ion-label>{{e.title}}</ion-label>
             <ion-label>{{e.category_id}}</ion-label>

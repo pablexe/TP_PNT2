@@ -18,20 +18,51 @@ export default {
 </script>
 
 <template>
+
   <ion-app>
     <ion-header>
-        <RouterLink to="/">Home | </RouterLink>
-        <RouterLink to="/login" v-id="!estalogeado">Login  |</RouterLink>
-        <RouterLink to="/about">About | </RouterLink>
-        <RouterLink to="/users">Users | </RouterLink>
-        <RouterLink to="/product">Products | </RouterLink>
-        <RouterLink to="/system" v-if="estalogeado">System | </RouterLink>
-        <RouterLink to="/shopping">Shopping (Cantidad: {{ getLenghtPoducts }}) | </RouterLink>
-        user {{ this.usuario.email }}
+    <ul class="header-list">
+        <li><RouterLink to="/">Home</RouterLink></li>
+        <li><RouterLink to="/login" v-id="!estalogeado">Login</RouterLink></li>
+        <li><RouterLink to="/about">About</RouterLink></li>
+        <li><RouterLink to="/users">Users</RouterLink></li>
+        <li><RouterLink to="/product">Products</RouterLink></li>
+        <li><RouterLink to="/system" v-if="estalogeado">System</RouterLink></li>
+        <li><RouterLink to="/shopping">Shopping</RouterLink></li>
+      </ul>
     </ion-header>
     <ion-router-outlet />
   </ion-app>
 </template>
 
 <style>
+
+ion-header {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  text-decoration: none;
+  }
+
+  ion-header .header-list {
+    padding: 0 1rem;
+    display: flex;
+    margin: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: end;
+    flex-direction: row;
+    list-style: none;
+    height: 5vw;
+    width: 100%;
+    background-color: black;
+    text-decoration: none;
+
+  }
+
+  ion-header .header-list li {
+    margin: 0 0.2rem;
+    text-decoration: none;
+  }
+
 </style>

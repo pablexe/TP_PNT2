@@ -1,24 +1,59 @@
 <script>
 import { IonPage,IonContent, IonList, IonInput, IonButton,IonItem,IonIcon } from '@ionic/vue';
+import axios from 'axios';
 export default {
   components: { IonPage,IonContent, IonList, IonInput, IonButton,IonIcon },
 data(){
         return{
-            lista: [{id:100,Nombre:'Charly',apellido:'Zaraza',rol:'Admin'},
-                    {id:101,Nombre:'Fulano',apellido:'Lopez',rol:'Operador'}],
-            person: {},
+            list: [],
+            user: {},
             showForm:false
        }
    },
+   created() {
+    this.fetchUsers();
+   },
    methods:{
-    addName(){
-        this.lista.push({...this.person})
-        this.person={}
+    async fetchUsers(){
+      try{
+        const response = await axios.get('http://localhost:3000/api/users');
+        this.list=response.data.body;
+      }catch(error){
+        console.log('Error al cargar Productos', error);
+      }
     },
-    deleteUser(id) {
-      this.lista = this.lista.filter(user => user.id !== id);
+    async addUser(){
+        try {
+          await axios.post('http://localhost:3000/api/users', this.user);
+          this.user = {};
+          this.fetchUsers(); 
+        }catch(error){
+          console.error('Error al guardar usuario', error)
+        }
+    },
+    async deleteUser(id) {
+      try{
+        await axios.delete(`http://localhost:3000/api/users/${id}`);
+        this.fetchUsers()
+      }catch(error){
+        console.error('Error al eliminar Usuario',error)
+      }
+    },
+    editUser(user) {
+      this.users = { ...user };
+      this.showForm = true; 
+    },
+    async updateUsuario() {
+    try {
+      await axios.put(`http://localhost:3000/api/users/${this.user._id}`, this.user);
+      this.user = {};
+      this.showForm = false; 
+      this.fetchUsers(); 
+    } catch (error) {
+      console.error('Error al actualizar usuario', error);
     }
-  }
+  },
+ }
 }
 </script>
 
@@ -28,26 +63,23 @@ data(){
       <h2>Lista de Usuarios</h2>
       <ion-button @click="showForm = !showForm">Crear Usuario</ion-button>
       <div v-if="showForm">
-        <ion-input v-model="person.id" placeholder="ID"></ion-input>
-        <ion-input v-model="person.Nombre" placeholder="Nombre"></ion-input>
-        <ion-input v-model="person.apellido" placeholder="Apellido"></ion-input>
-        <ion-input v-model="person.rol" placeholder="Rol"></ion-input>
-        <ion-button @click="addName">Guardar</ion-button>
+        <ion-input v-model="user.nombre" placeholder="Nombre"></ion-input>
+        <ion-input v-model="user.apellido" placeholder="Apellido"></ion-input>
+        <ion-input v-model="user.rol" placeholder="Rol"></ion-input>
+        <ion-button @click="addUser">Guardar</ion-button>
       </div>
       <Ion-list>
         <ion-item>
-          <ion-label>ID</ion-label>
           <ion-label>Nombre</ion-label>
           <ion-label>Apellido</ion-label>
           <ion-label>Rol</ion-label>
         </ion-item>
-        <ion-item v-for="e in lista" :key="e.id">
-          <ion-label>{{e.id}}</ion-label>
-          <ion-label>{{e.Nombre}}</ion-label>
+        <ion-item v-for="e in list" :key="e._id">
+          <ion-label>{{e.nombre}}</ion-label>
           <ion-label>{{e.apellido}}</ion-label>
           <ion-label>{{e.rol}}</ion-label>
           <ion-button @click="editUser(e)">Editar</ion-button>
-          <ion-button @click="deleteUser(e.id)" color="danger">Borrar</ion-button>
+          <ion-button @click="deleteUser(e._id)" color="danger">Borrar</ion-button>
         </ion-item>    
       </ion-list>
       <div class="return-button">

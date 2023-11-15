@@ -1,23 +1,54 @@
 <script>
 import { IonPage,IonContent, IonList, IonInput, IonButton,IonItem,IonIcon } from '@ionic/vue';
+import axios from 'axios';
 export default {
   components: { IonPage,IonContent, IonList, IonInput, IonButton,IonIcon },
 data(){
         return{
-            list: [{id:100,sku:'Charly',descripcion:'Zaraza', costo:'Admin',categoria:'M', marca:'XXX',importado:'',stock_disponible:''},
-                    {id:101,sku:'Fulano',descripcion:'Lopez', costo:'Operador',categoria:'M',marca:'XXX',importado:'',stock_disponible:''}],
+            list:[],
             product: {},
             showForm:false
        }
    },
+   created() {
+    this.fetchProducts();
+  },
    methods:{
-    addProduct(){
-        this.lista.push({...this.product})
-        this.product={}
+    async fetchProducts(){
+      try{
+        const response = await axios.get('http://localhost:3000/api/products');
+        this.list=response.data.body;
+      }catch(error){
+        console.log('Error al cargar Productos', error);
+      }
     },
-    deleteProduct(id) {
-      this.list = this.lista.filter(product => product.id !== id);
+    async addProduct(){
+        try {
+          await axios.post('http://localhost:3000/api/products', this.product);
+          this.product = {};
+          this.fetchProducts(); 
+        }catch(error){
+          console.error('Error al guardar producto', error)
+        }
+    },
+    async deleteProduct(id) {
+      try{
+        await axios.delete(`http://localhost:3000/api/products/${id}`);
+        this.fetchProducts()
+      }catch(error){
+        console.error('Error al eliminar producto',error)
+      }
+    },
+    async updateProduct() {
+    try {
+      await axios.put(`http://localhost:3000/api/products/${this.product._id}`, this.product);
+      this.product = {};
+      this.showForm = false; 
+      this.fetchProducts(); 
+    } catch (error) {
+      console.error('Error al actualizar producto', error);
     }
+  },
   }
 }
 </script>
@@ -26,9 +57,9 @@ data(){
   <ion-page>
     <ion-content>
       <h2>Inventario de productos</h2>
+      
       <ion-button @click="showForm = !showForm">Crear Productos</ion-button>
       <div v-if="showForm">
-        <ion-input v-model="product.id" placeholder="ID"></ion-input>
         <ion-input v-model="product.sku" placeholder="sku"></ion-input>
         <ion-input v-model="product.descripcion" placeholder="descripcion"></ion-input>
         <ion-input v-model="product.costo" placeholder="costo"></ion-input>
@@ -40,7 +71,6 @@ data(){
       </div>
       <Ion-list>
         <ion-item>
-          <ion-label>ID</ion-label>
           <ion-label>sku</ion-label>
           <ion-label>descripcion</ion-label>
           <ion-label>costo</ion-label>
@@ -49,8 +79,7 @@ data(){
           <ion-label>importado</ion-label>
           <ion-label>stock_disponible</ion-label>
         </ion-item>
-        <ion-item v-for="e in list" :key="e.id">
-          <ion-label>{{e.id}}</ion-label>
+        <ion-item v-for="e in list" :key="e._id">
           <ion-label>{{e.sku}}</ion-label>
           <ion-label>{{e.descripcion}}</ion-label>
           <ion-label>{{e.costo}}</ion-label>
@@ -58,8 +87,8 @@ data(){
           <ion-label>{{e.marca}}</ion-label>
           <ion-label>{{e.importado}}</ion-label>
           <ion-label>{{e.stock_disponible}}</ion-label>
-          <ion-button @click="editProduct(e)">Editar</ion-button>
-          <ion-button @click="deleteProduct(e.id)" color="danger">Borrar</ion-button>
+          <ion-button @click="updateProduct(e)">Editar</ion-button>
+          <ion-button @click="deleteProduct(e._id)" color="danger">Borrar</ion-button>
         </ion-item>    
       </ion-list>
       <div class="return-button">

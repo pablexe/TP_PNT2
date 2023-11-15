@@ -1,23 +1,54 @@
 <script>
 import { IonPage,IonContent, IonList, IonInput, IonButton,IonItem,IonIcon } from '@ionic/vue';
+import axios from 'axios';
 export default {
   components: { IonPage,IonContent, IonList, IonInput, IonButton,IonIcon },
 data(){
         return{
-            list: [{id:'MLA1156539127',title:'Hub Usb C Dock 8 En 1 Usb Hdmi Lan Lector Tarjeta Carga Vga',category_id:' MLA9729', price:'30451',base_price:'30451', imagen:'http://http2.mlstatic.com/D_900427-MLA51246189276_082022-I.jpg',condition:'new',status:'Active', product_cost:'',margin:'',sale_fee:'',shipping_cost:''},
-            {id:'MLA1156539127',title:'Hub Usb C Dock 8 En 1 Usb Hdmi Lan Lector Tarjeta Carga Vga',category_id:' MLA9729', price:'30451',base_price:'30451', imagen:'http://http2.mlstatic.com/D_900427-MLA51246189276_082022-I.jpg',condition:'new',status:'Active', product_cost:'',margin:'',sale_fee:'',shipping_cost:''}],
-            item: {},
+            list: [],
+            listings: {},
             showForm:false
        }
    },
+   created() {
+    this.fetchListings();
+   },
    methods:{
-    addItem(){
-        this.list.push({...this.item})
-        this.item={}
+    async fetchListings(){
+      try{
+        const response = await axios.get('http://localhost:3000/api/listings');
+        this.list=response.data.body;
+      }catch(error){
+        console.log('Error al cargar Productos', error);
+      }
     },
-    deleteItemt(id) {
-      this.list = this.list.filter(item => item.id !== id);
+    async addListing(){
+        try {
+          await axios.post('http://localhost:3000/api/listings', this.listings);
+          this.listings = {};
+          this.fetchListing(); 
+        }catch(error){
+          console.error('Error al guardar producto', error)
+        }
+    },
+    async deleteListing(id) {
+      try{
+        await axios.delete(`http://localhost:3000/api/listings/${id}`);
+        this.fetchListings()
+      }catch(error){
+        console.error('Error al eliminar producto',error)
+      }
+    },
+    async updateListing() {
+    try {
+      await axios.put(`http://localhost:3000/api/listings/${this.listings._id}`, this.listings);
+      this.listings = {};
+      this.showForm = false; 
+      this.fetchListings(); 
+    } catch (error) {
+      console.error('Error al actualizar producto', error);
     }
+  },
   }
   
 }
@@ -30,25 +61,23 @@ data(){
       <h2>Nuestras Publicaciones </h2>
       <ion-button @click="showForm = !showForm">Crear Publicacion</ion-button>
       <div v-if="showForm">
-        <ion-input v-model="item.id" placeholder="ID"></ion-input>
-        <ion-input v-model="item.title" placeholder="title"></ion-input>
-        <ion-input v-model="item.category_id" placeholder="category_id"></ion-input>
-        <ion-input v-model="item.price" placeholder="price"></ion-input>
-        <ion-input v-model="item.base_price" placeholder="base_price"></ion-input>
-        <ion-input v-model="item.imagen" placeholder="imagen"></ion-input>
-        <ion-input v-model="item.condition" placeholder="condition"></ion-input>
-        <ion-input v-model="item.status" placeholder="stock_disponible"></ion-input>
-        <ion-input v-model="item.sku" placeholder="sku"></ion-input>
-        <ion-input v-model="item.product_cost" placeholder="product_cost"></ion-input>
-        <ion-input v-model="item.margin" placeholder="margin"></ion-input>
-        <ion-input v-model="item.sale_fee" placeholder="sale_fee"></ion-input>
-        <ion-input v-model="item.shipping_cost" placeholder="shipping_cost"></ion-input>
-        <ion-button @click="addItem">Guardar</ion-button>
+        <ion-input v-model="listings.title" placeholder="title"></ion-input>
+        <ion-input v-model="listings.category_id" placeholder="category_id"></ion-input>
+        <ion-input v-model="listings.price" placeholder="price"></ion-input>
+        <ion-input v-model="listings.base_price" placeholder="base_price"></ion-input>
+        <ion-input v-model="listings.imagen" placeholder="imagen"></ion-input>
+        <ion-input v-model="listings.condition" placeholder="condition"></ion-input>
+        <ion-input v-model="listings.status" placeholder="stock_disponible"></ion-input>
+        <ion-input v-model="listings.sku" placeholder="sku"></ion-input>
+        <ion-input v-model="listings.product_cost" placeholder="product_cost"></ion-input>
+        <ion-input v-model="listings.margin" placeholder="margin"></ion-input>
+        <ion-input v-model="listings.sale_fee" placeholder="sale_fee"></ion-input>
+        <ion-input v-model="listings.shipping_cost" placeholder="shipping_cost"></ion-input>
+        <ion-button @click="addListing">Guardar</ion-button>
       </div>
       <Ion-list>
         <ion-item>
           <div class="item-header">
-            <ion-label>ID</ion-label>
             <ion-label>title</ion-label>
             <ion-label>category_id</ion-label>
             <ion-label>price</ion-label>
@@ -63,9 +92,8 @@ data(){
             <ion-label>shipping_cost</ion-label>
         </div>
         </ion-item>
-        <ion-item v-for="e in list" :key="e.id">
+        <ion-item v-for="e in listings" :key="e._id">
           <div class="item-header">
-            <ion-label>{{e.id}}</ion-label>
             <ion-label>{{e.title}}</ion-label>
             <ion-label>{{e.category_id}}</ion-label>
             <ion-label>{{e.price}}</ion-label>
@@ -80,7 +108,7 @@ data(){
             <ion-label>{{e.shipping_cost}}</ion-label>
           </div>
           <ion-button @click="editItem(e)">Editar</ion-button>
-          <ion-button @click="deleteItem(e.id)" color="danger">Borrar</ion-button>
+          <ion-button @click="deleteListing(e.id)" color="danger">Borrar</ion-button>
         </ion-item>    
       </ion-list>
     

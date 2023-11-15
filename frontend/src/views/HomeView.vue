@@ -24,11 +24,11 @@ data(){
     },
     async addListing(){
         try {
-          await axios.post('http://localhost:3000/api/listings', this.listings);
-          this.listings = {};
+          await axios.post('http://localhost:3000/api/listings', this.listing);
+          this.listing = {};
           this.fetchListing(); 
         }catch(error){
-          console.error('Error al guardar producto', error)
+          console.error('Error al guardar publicacion', error)
         }
     },
     async deleteListing(id) {

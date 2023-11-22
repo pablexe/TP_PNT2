@@ -7,7 +7,9 @@ data(){
         return{
             list: [],
             listings: {},
-            showForm:false
+            showForm:false,
+            editMode:false,
+            editingListingId: null,
        }
    },
    created() {
@@ -43,16 +45,25 @@ data(){
     try {
       await axios.put(`http://localhost:3000/api/listings/${this.listings._id}`, this.listings);
       this.listings = {};
+      this.editMode = false;
       this.showForm = false; 
-      this.fetchListings(); 
     } catch (error) {
       console.error('Error al actualizar producto', error);
     }
   },
+  prepareEdit(listing) {
+      this.listings = {...listing}; 
+      this.editMode = true;
+      this.showForm = true;
+    },
+    saveListing() {
+      if (this.editMode) {
+        this.updateListing();
+      } else {
+        this.addListing();
+      }
+    },
   }
-  
-
-  
 }
 
 
@@ -71,7 +82,7 @@ data(){
 
       <div class="formshow" v-if="showForm">
         <ul class="form-content">
-          <li>          <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
+          <li> <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
         <ion-input v-model="listings.category_id" placeholder="Id_Categoria"></ion-input></li>
             <li>
               <ion-input v-model="listings.price" placeholder="Precio"></ion-input>
@@ -90,12 +101,12 @@ data(){
         <ion-input v-model="listings.margin" placeholder="margin"></ion-input>
         </li>
        <li>
-        <ion-input v-model="listings.sale_fee" placeholder="sale_fee"></ion-input>
+        <ion-input v-model="listings.sale_fee" placeholder="Sale Fee"></ion-input>
         <ion-input v-model="listings.shipping_cost" placeholder="shipping_cost"></ion-input>
        </li>
       </ul>
         
-        <ion-button @click="addListing">Guardar</ion-button>
+      <ion-button @click="saveListing">Guardar</ion-button>
 
       </div>
       <Ion-list>
@@ -131,7 +142,7 @@ data(){
             <ion-label>{{e.sale_fee}}</ion-label>
             <ion-label>{{e.shipping_cost}}</ion-label>
           <ion-label><ion-button @click="deleteListing(e._id)" color="danger">x</ion-button></ion-label>
-          <ion-label><ion-button @click="updateListing(e._id)" color="danger">EDIT</ion-button></ion-label>
+          <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
           </div>
 
         </ion-item>    

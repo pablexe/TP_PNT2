@@ -62,9 +62,7 @@ module.exports.ListingController={
         try {
             const { id } = req.params;
             const listingData = req.body;
-            console.log("Received ID:", id);
-            console.log("Received data:", listingData);
-            const modifiedCount = await ListingService.update(id, listingData);
+            const modifiedCount = await ListingService.updateListing(id, listingData);
             if (modifiedCount > 0) {
                 Response.success(res, 200, `Listing con ID ${id} actualizado`, modifiedCount);
             } else {

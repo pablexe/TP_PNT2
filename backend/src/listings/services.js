@@ -26,11 +26,21 @@ const deleteListing = async (id) => {
 }
 
 const updateListing = async (id, listingData) => {
+
+    delete listingData._id;
+
+    if (!ObjectId.isValid(id)) {
+        throw new Error("Invalid ID format");
+    }        
+
     const collection = await Database(COLLECTION);
     const result = await collection.updateOne(
+
         { _id: new ObjectId(id) },
         { $set: listingData }
-    );
+    )
+    console.log("result",result)
+    //console.log(modifiedCount)
     return result.modifiedCount;
 }
 

@@ -7,7 +7,9 @@ data(){
         return{
             list: [],
             user: {},
-            showForm:false
+            showForm:false,
+            editMode:false,
+            editingUserId: null
        }
    },
    created() {
@@ -46,6 +48,7 @@ data(){
     async updateUsuario() {
     try {
       await axios.put(`http://localhost:3000/api/users/${this.user._id}`, this.user);
+      this.fetchUsers();
       this.user = {};
       this.showForm = false; 
       this.fetchUsers(); 
@@ -53,6 +56,18 @@ data(){
       console.error('Error al actualizar usuario', error);
     }
   },
+  prepareEdit(user) {
+      this.user = {...user}; 
+      this.editMode = true;
+      this.showForm = true;
+    },
+    saveProduct() {
+      if (this.editMode) {
+        this.updateUsuario();
+      } else {
+        this.addUser(); 
+      }
+    }, 
  }
 }
 </script>
@@ -66,7 +81,7 @@ data(){
         <ion-input v-model="user.nombre" placeholder="Nombre"></ion-input>
         <ion-input v-model="user.apellido" placeholder="Apellido"></ion-input>
         <ion-input v-model="user.rol" placeholder="Rol"></ion-input>
-        <ion-button @click="addUser">Guardar</ion-button>
+        <ion-button @click="saveProduct">Guardar</ion-button>
       </div>
       <Ion-list>
         <ion-item>
@@ -80,6 +95,7 @@ data(){
           <ion-label>{{e.apellido}}</ion-label>
           <ion-label>{{e.rol}}</ion-label>
           <ion-button @click="deleteUser(e._id)" color="danger">x</ion-button>
+          <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
         </ion-item>    
       </ion-list>
       <div class="return-button">

@@ -26,6 +26,7 @@ const deleteProduct = async (id) => {
 }
 
 const updateProduct = async (id, productData) => {
+    delete productData._id;
     const collection = await Database(COLLECTION);
     const result = await collection.updateOne(
         { _id: new ObjectId(id) },

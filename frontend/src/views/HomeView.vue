@@ -44,6 +44,7 @@ data(){
     async updateListing() {
     try {
       await axios.put(`http://localhost:3000/api/listings/${this.listings._id}`, this.listings);
+      this.fetchListings()
       this.listings = {};
       this.editMode = false;
       this.showForm = false; 
@@ -59,8 +60,10 @@ data(){
     saveListing() {
       if (this.editMode) {
         this.updateListing();
+        this.fetchListings(); 
       } else {
         this.addListing();
+        this.fetchListings(); 
       }
     },
   }
@@ -83,26 +86,26 @@ data(){
       <div class="formshow" v-if="showForm">
         <ul class="form-content">
           <li> <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
-        <ion-input v-model="listings.category_id" placeholder="Id_Categoria"></ion-input></li>
+        <ion-input v-model="listings.category_id" placeholder="Categoria"></ion-input></li>
             <li>
               <ion-input v-model="listings.price" placeholder="Precio"></ion-input>
-        <ion-input v-model="listings.base_price" placeholder="Precio_Base"></ion-input>
+        <ion-input v-model="listings.base_price" placeholder="Precio Base"></ion-input>
             </li>
         <li>
-          <ion-input v-model="listings.imagen" placeholder="imagen"></ion-input>
-        <ion-input v-model="listings.condition" placeholder="condition"></ion-input>
+          <ion-input v-model="listings.imagen" placeholder="Imagen"></ion-input>
+        <ion-input v-model="listings.condition" placeholder="Condition"></ion-input>
         </li>
         <li>
-          <ion-input v-model="listings.status" placeholder="stock_disponible"></ion-input>
-        <ion-input v-model="listings.sku" placeholder="sku"></ion-input>
+          <ion-input v-model="listings.status" placeholder="Stock Disp."></ion-input>
+        <ion-input v-model="listings.sku" placeholder="SKU"></ion-input>
         </li>
         <li>
-          <ion-input v-model="listings.product_cost" placeholder="product_cost"></ion-input>
-        <ion-input v-model="listings.margin" placeholder="margin"></ion-input>
+          <ion-input v-model="listings.product_cost" placeholder="Producto Cost"></ion-input>
+        <ion-input v-model="listings.margin" placeholder="Margin"></ion-input>
         </li>
        <li>
         <ion-input v-model="listings.sale_fee" placeholder="Sale Fee"></ion-input>
-        <ion-input v-model="listings.shipping_cost" placeholder="shipping_cost"></ion-input>
+        <ion-input v-model="listings.shipping_cost" placeholder="Shipping Cost"></ion-input>
        </li>
       </ul>
         
@@ -141,8 +144,8 @@ data(){
             <ion-label>{{e.margin}}</ion-label>
             <ion-label>{{e.sale_fee}}</ion-label>
             <ion-label>{{e.shipping_cost}}</ion-label>
-          <ion-label><ion-button @click="deleteListing(e._id)" color="danger">x</ion-button></ion-label>
-          <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
+            <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
+            <ion-label><ion-button @click="deleteListing(e._id)" color="danger">x</ion-button></ion-label>
           </div>
 
         </ion-item>    
@@ -153,7 +156,7 @@ data(){
     </ion-content>
   </ion-page>
   </div>  
-  <ion-button id="present-alert">Click Me</ion-button>
+  
 <ion-alert trigger="present-alert" header="Alert!"></ion-alert>
 
 </template>

@@ -22,7 +22,7 @@ export default {
   <ion-app>
     <ion-header>
     <ul class="header-list">
-        <li><RouterLink to="/">Home</RouterLink></li>
+        <li><RouterLink to="/home">Home</RouterLink></li>
         <li><RouterLink to="/login" v-id="!estalogeado">Login</RouterLink></li>
         <li><RouterLink to="/users">Users</RouterLink></li>
         <li><RouterLink to="/product">Products</RouterLink></li>

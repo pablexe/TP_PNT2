@@ -7,7 +7,9 @@ data(){
         return{
             list:[],
             product: {},
-            showForm:false
+            showForm:false,
+            editMode:false,
+            editingListingId: null,
        }
    },
    created() {
@@ -42,6 +44,7 @@ data(){
     async updateProduct() {
     try {
       await axios.put(`http://localhost:3000/api/products/${this.product._id}`, this.product);
+      this.fetchProducts();
       this.product = {};
       this.showForm = false; 
       this.fetchProducts(); 
@@ -49,6 +52,18 @@ data(){
       console.error('Error al actualizar producto', error);
     }
   },
+  prepareEdit(product) {
+      this.product = {...product}; 
+      this.editMode = true;
+      this.showForm = true;
+    },
+    saveProduct() {
+      if (this.editMode) {
+        this.updateProduct();
+      } else {
+        this.addProduct(); 
+      }
+    },
   }
 }
 </script>
@@ -60,24 +75,26 @@ data(){
       
       <ion-button @click="showForm = !showForm">Crear Productos</ion-button>
       <div v-if="showForm">
-        <ion-input v-model="product.sku" placeholder="sku"></ion-input>
-        <ion-input v-model="product.descripcion" placeholder="descripcion"></ion-input>
-        <ion-input v-model="product.costo" placeholder="costo"></ion-input>
-        <ion-input v-model="product.categoria" placeholder="categoria"></ion-input>
-        <ion-input v-model="product.marca" placeholder="marca"></ion-input>
-        <ion-input v-model="product.importado" placeholder="importado"></ion-input>
-        <ion-input v-model="product.stock_disponible" placeholder="stock_disponible"></ion-input>
-        <ion-button @click="addProduct">Guardar</ion-button>
+        <ion-input v-model="product.sku" placeholder="SKU"></ion-input>
+        <ion-input v-model="product.descripcion" placeholder="Descripcion"></ion-input>
+        <ion-input v-model="product.costo" placeholder="Costo"></ion-input>
+        <ion-input v-model="product.categoria" placeholder="Categoria"></ion-input>
+        <ion-input v-model="product.marca" placeholder="Marca"></ion-input>
+        <ion-input v-model="product.importado" placeholder="Importado"></ion-input>
+        <ion-input v-model="product.stock_disponible" placeholder="Stock Disp.e"></ion-input>
+        <ion-button @click="saveProduct">Guardar</ion-button>
       </div>
       <Ion-list>
         <ion-item>
-          <ion-label>sku</ion-label>
-          <ion-label>descripcion</ion-label>
-          <ion-label>costo</ion-label>
-          <ion-label>categoria</ion-label>
-          <ion-label>marca</ion-label>
-          <ion-label>importado</ion-label>
-          <ion-label>stock_disponible</ion-label>
+          <ion-label>SKU</ion-label>
+          <ion-label>Descripción</ion-label>
+          <ion-label>Costo</ion-label>
+          <ion-label>Categoria</ion-label>
+          <ion-label>Marca</ion-label>
+          <ion-label>Importado</ion-label>
+          <ion-label>Stock Disponible</ion-label>
+          <ion-label></ion-label>
+          <ion-label></ion-label>
         </ion-item>
         <ion-item v-for="e in list" :key="e._id">
           <ion-label>{{e.sku}}</ion-label>
@@ -87,6 +104,7 @@ data(){
           <ion-label>{{e.marca}}</ion-label>
           <ion-label>{{e.importado}}</ion-label>
           <ion-label>{{e.stock_disponible}}</ion-label>
+          <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
           <ion-button @click="deleteProduct(e._id)" color="danger">X</ion-button>
         </ion-item>    
       </ion-list>

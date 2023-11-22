@@ -87,8 +87,7 @@ data(){
           <ion-label>{{e.marca}}</ion-label>
           <ion-label>{{e.importado}}</ion-label>
           <ion-label>{{e.stock_disponible}}</ion-label>
-          <ion-button @click="updateProduct(e)">Editar</ion-button>
-          <ion-button @click="deleteProduct(e._id)" color="danger">Borrar</ion-button>
+          <ion-button @click="deleteProduct(e._id)" color="danger">X</ion-button>
         </ion-item>    
       </ion-list>
       <div class="return-button">

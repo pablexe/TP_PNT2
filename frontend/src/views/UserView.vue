@@ -73,13 +73,13 @@ data(){
           <ion-label>Nombre</ion-label>
           <ion-label>Apellido</ion-label>
           <ion-label>Rol</ion-label>
+          
         </ion-item>
         <ion-item v-for="e in list" :key="e._id">
           <ion-label>{{e.nombre}}</ion-label>
           <ion-label>{{e.apellido}}</ion-label>
           <ion-label>{{e.rol}}</ion-label>
-          <ion-button @click="editUser(e)">Editar</ion-button>
-          <ion-button @click="deleteUser(e._id)" color="danger">Borrar</ion-button>
+          <ion-button @click="deleteUser(e._id)" color="danger">x</ion-button>
         </ion-item>    
       </ion-list>
       <div class="return-button">

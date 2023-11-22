@@ -24,11 +24,9 @@ export default {
     <ul class="header-list">
         <li><RouterLink to="/">Home</RouterLink></li>
         <li><RouterLink to="/login" v-id="!estalogeado">Login</RouterLink></li>
-        <li><RouterLink to="/about">About</RouterLink></li>
         <li><RouterLink to="/users">Users</RouterLink></li>
         <li><RouterLink to="/product">Products</RouterLink></li>
         <li><RouterLink to="/system" v-if="estalogeado">System</RouterLink></li>
-        <li><RouterLink to="/shopping">Shopping</RouterLink></li>
       </ul>
     </ion-header>
     <ion-router-outlet />

@@ -69,18 +69,14 @@ data(){
       }
     },
     validatePriceInput() {
-      // Elimina los caracteres no numéricos y asegúrate de que el valor no sea negativo
       this.listings.price = this.listings.price.replace(/\D/g, '');
       if (this.listings.price !== '' && parseInt(this.listings.price, 10) < 0) {
-        // Si el valor es negativo, establece el valor en vacío
         this.listings.price = '';
       }
   },
   validateBasePriceInput() {
-      // Elimina los caracteres no numéricos y asegúrate de que el valor no sea negativo
       this.listings.base_price = this.listings.base_price.replace(/\D/g, '');
       if (this.listings.base_price !== '' && parseInt(this.listings.base_price, 10) < 0) {
-        // Si el valor es negativo, establece el valor en vacío
         this.listings.base_price = '';
       }
   }
@@ -264,20 +260,20 @@ data(){
       <Ion-list>
         <ion-item>
           <div class="item-header">
-            <ion-label>title</ion-label>
-            <ion-label>category_id</ion-label>
-            <ion-label>price</ion-label>
-            <ion-label>base_price</ion-label>
-            <ion-label>imagen</ion-label>
-            <ion-label>condition</ion-label>
-            <ion-label>status</ion-label>
-            <ion-label>sku</ion-label>
-            <ion-label>product_cost</ion-label>
-            <ion-label>margin</ion-label>
-            <ion-label>sale_fee</ion-label>
-            <ion-label>shipping_cost</ion-label>
-            <ion-label>ㅤ</ion-label>
-            <ion-label>ㅤ</ion-label>
+            <ion-label>Título</ion-label>
+            <ion-label>Categoria</ion-label>
+            <ion-label>Precio</ion-label>
+            <ion-label>Precio Base</ion-label>
+            <ion-label>Img</ion-label>
+            <ion-label>Condición</ion-label>
+            <ion-label>Stock</ion-label>
+            <ion-label>SKU</ion-label>
+            <ion-label>Costo del Producto</ion-label>
+            <ion-label>Margen</ion-label>
+            <ion-label>Comisión</ion-label>
+            <ion-label>Costo del Envío</ion-label>
+            <ion-label>ㅤ      </ion-label>
+            <ion-label>ㅤ      </ion-label>
         </div>
         </ion-item>
         <div class="content-list">

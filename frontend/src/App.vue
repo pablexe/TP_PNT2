@@ -21,13 +21,19 @@ export default {
 
   <ion-app>
     <ion-header>
-    <ul class="header-list">
-        <li><RouterLink to="/home">Home</RouterLink></li>
+    <div class="header-list">
+        <div class="img-content">
+          <img src="./assets/iconnn.png" alt="">
+        </div>
+        <ul class="nav-content">
+          <li><RouterLink to="/home">Home</RouterLink></li>
         <li><RouterLink to="/login" v-id="!estalogeado">Login</RouterLink></li>
         <li><RouterLink to="/users">Users</RouterLink></li>
         <li><RouterLink to="/product">Products</RouterLink></li>
         <li><RouterLink to="/system" v-if="estalogeado">System</RouterLink></li>
-      </ul>
+        </ul>
+
+      </div>
     </ion-header>
     <ion-router-outlet />
   </ion-app>
@@ -48,7 +54,7 @@ ion-header {
     margin: 0;
     z-index: 100;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     flex-direction: row;
     list-style: none;
     height: 5vw;
@@ -56,6 +62,19 @@ ion-header {
     background-color: black;
     text-decoration: none;
 
+  }
+  ion-header .header-list .img-content {
+    align-items: center;
+  }
+
+  ion-header .header-list .img-content img {
+    width: 5vh;
+    height: 5vh;
+  }
+
+  ion-header .header-list .nav-content {
+    display: flex;
+    flex-direction: row;
   }
 
   ion-header .header-list li {

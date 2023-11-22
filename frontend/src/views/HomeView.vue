@@ -10,6 +10,8 @@ data(){
             showForm:false,
             editMode:false,
             editingListingId: null,
+            price: '0',
+            base_price: '0'
        }
    },
    created() {
@@ -66,7 +68,26 @@ data(){
         this.fetchListings(); 
       }
     },
+    validatePriceInput() {
+      // Elimina los caracteres no numéricos y asegúrate de que el valor no sea negativo
+      this.listings.price = this.listings.price.replace(/\D/g, '');
+      if (this.listings.price !== '' && parseInt(this.listings.price, 10) < 0) {
+        // Si el valor es negativo, establece el valor en vacío
+        this.listings.price = '';
+      }
+  },
+  validateBasePriceInput() {
+      // Elimina los caracteres no numéricos y asegúrate de que el valor no sea negativo
+      this.listings.base_price = this.listings.base_price.replace(/\D/g, '');
+      if (this.listings.base_price !== '' && parseInt(this.listings.base_price, 10) < 0) {
+        // Si el valor es negativo, establece el valor en vacío
+        this.listings.base_price = '';
+      }
   }
+
+
+
+}
 }
 
 
@@ -84,8 +105,135 @@ data(){
       <ion-button @click="showForm = !showForm">Crear Publicacion</ion-button>
 
       <div class="formshow" v-if="showForm">
-        <ul class="form-content">
-          <li> <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
+
+        <div class="form-content">
+
+          <div class="content-tittle">
+            <h2>PRODUCTO</h2>
+          </div>
+          <ul class="content-input">
+
+            <li>
+              <div>
+                <h4>TITULO</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h4>Categoria</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.category_id" placeholder="Categoria"></ion-input>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h4>Precio</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.price" placeholder="Precio" type="number" inputmode="numeric"
+  pattern="\d*" @input="validatePriceInput"></ion-input>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h4>Precio Base</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.base_price" placeholder="Precio Base" type="number" inputmode="numeric"
+  pattern="\d*" @input="validateBasePriceInput"></ion-input>
+              </div>
+            </li>
+
+         <!-- <ul class="form-content"> -->
+
+            <li>
+              <div>
+                <h4>Link Imagen URL</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.imagen" placeholder="Imagen"></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>Condicion</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.condition" placeholder="Condition"></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>Stock Disponible</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.status" placeholder="Stock Disp."></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>SKU</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.sku" placeholder="SKU"></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>Costo de Producto</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.product_cost" placeholder="Producto Cost"></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>Margin</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.margin" placeholder="Margin"></ion-input>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <h4>Sale Free</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.sale_fee" placeholder="Sale Free"></ion-input>
+              </div>
+            </li>
+            
+            <li>
+              <div>
+                <h4>Shipping Cost</h4>
+              </div>
+              <div>
+                <ion-input v-model="listings.shipping_cost" placeholder="Shipping Cost"></ion-input>
+              </div>
+            </li>
+            
+          
+          </ul>
+          <div class="content-button">
+            <ion-button @click="saveListing">Guardar</ion-button>
+          </div>
+
+        </div>
+
+
+
+        <!-- <ul class="form-content">
+          <li> <h1></h1> <ion-input v-model="listings.title" placeholder="Titulo"></ion-input>
         <ion-input v-model="listings.category_id" placeholder="Categoria"></ion-input></li>
             <li>
               <ion-input v-model="listings.price" placeholder="Precio"></ion-input>
@@ -107,9 +255,10 @@ data(){
         <ion-input v-model="listings.sale_fee" placeholder="Sale Fee"></ion-input>
         <ion-input v-model="listings.shipping_cost" placeholder="Shipping Cost"></ion-input>
        </li>
+       <ion-button @click="saveListing">Guardar</ion-button>
+
       </ul>
-        
-      <ion-button @click="saveListing">Guardar</ion-button>
+         -->
 
       </div>
       <Ion-list>
@@ -127,10 +276,12 @@ data(){
             <ion-label>margin</ion-label>
             <ion-label>sale_fee</ion-label>
             <ion-label>shipping_cost</ion-label>
-            <ion-label>Delete</ion-label>
+            <ion-label>ㅤ</ion-label>
+            <ion-label>ㅤ</ion-label>
         </div>
         </ion-item>
-        <ion-item v-for="e in list" :key="e._id">
+        <div class="content-list">
+          <ion-item v-for="e in list" :key="e._id">
           <div class="item-header">
             <ion-label>{{e.title}}</ion-label>
             <ion-label>{{e.category_id}}</ion-label>
@@ -144,15 +295,12 @@ data(){
             <ion-label>{{e.margin}}</ion-label>
             <ion-label>{{e.sale_fee}}</ion-label>
             <ion-label>{{e.shipping_cost}}</ion-label>
-            <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
+            <ion-label><ion-button @click="prepareEdit(e)" color="primary">EDIT</ion-button></ion-label>
             <ion-label><ion-button @click="deleteListing(e._id)" color="danger">x</ion-button></ion-label>
           </div>
-
         </ion-item>    
+        </div>
       </ion-list>
-    
-
-
     </ion-content>
   </ion-page>
   </div>  
@@ -165,6 +313,8 @@ data(){
 
 <style>
 
+
+
 .scroll-content .formshow {
   display: flex;
   justify-content: center;
@@ -173,15 +323,20 @@ data(){
 }
 
 .scroll-content .formshow .form-content {
-  list-style: none;
+  align-items: center;
+  text-align: center;
 padding: 2rem;
 border: solid;
 }
 
-.scroll-content .formshow .form-content li{
+.scroll-content .formshow .form-content .content-input{
+  list-style: none;
   display: flex;
   flex-direction: row;
-  
+  flex-wrap: wrap;
+}
+.scroll-content .formshow .form-content .content-input li{
+  flex: 1 1 calc(50% - 20px);
 }
 
 
@@ -204,7 +359,7 @@ ion-list {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #000000;
   padding: 10px;
 }
 
@@ -213,6 +368,7 @@ ion-list {
 .item-content > ion-label 
 .item-content > ion-img {
   text-align: center;
+  align-items: center;
   flex-grow: 1;
   flex-basis: 0;
   padding:8px;
@@ -252,7 +408,7 @@ ion-list {
 }
 
 .list-container {
-  border: 1px solid #ccc; /* Añade un borde */
+  border: 1px solid #000000; /* Añade un borde */
   border-radius: 10px; /* Bordes redondeados */
   overflow: hidden; /* Esto asegura que el contenido no se desborde de las esquinas redondeadas */
 }

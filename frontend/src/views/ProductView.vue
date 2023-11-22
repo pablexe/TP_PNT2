@@ -70,19 +70,85 @@ data(){
 
 <template>
   <ion-page>
-    <ion-content>
+    <ion-content class="scroll-content">
       <h2>Inventario de productos</h2>
       
       <ion-button @click="showForm = !showForm">Crear Productos</ion-button>
-      <div v-if="showForm">
-        <ion-input v-model="product.sku" placeholder="SKU"></ion-input>
-        <ion-input v-model="product.descripcion" placeholder="Descripcion"></ion-input>
-        <ion-input v-model="product.costo" placeholder="Costo"></ion-input>
-        <ion-input v-model="product.categoria" placeholder="Categoria"></ion-input>
-        <ion-input v-model="product.marca" placeholder="Marca"></ion-input>
-        <ion-input v-model="product.importado" placeholder="Importado"></ion-input>
-        <ion-input v-model="product.stock_disponible" placeholder="Stock Disp.e"></ion-input>
-        <ion-button @click="saveProduct">Guardar</ion-button>
+      <div v-if="showForm"  class="formshow">
+
+      <div class="form-content">
+
+          <div class="content-tittle">
+            <h2>USUARIO</h2>
+          </div>
+          <ul class="content-input">
+
+            <li>
+              <div>
+                <h4>SKU</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.sku" placeholder="SKU"></ion-input>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h4>Descripcion</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.descripcion" placeholder="Descripcion"></ion-input>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h4>Costo</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.costo" placeholder="Costo"></ion-input>
+              </div>
+            </li>     
+
+            <li>
+              <div>
+                <h4>Categoria</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.categoria" placeholder="Categoria"></ion-input>
+              </div>
+            </li>   
+
+            <li>
+              <div>
+                <h4>Marca</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.marca" placeholder="Marca"></ion-input>
+              </div>
+            </li>   
+            
+            <li>
+              <div>
+                <h4>Importado</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.importado" placeholder="Importado"></ion-input>
+              </div>
+            </li>   
+
+
+            <li>
+              <div>
+                <h4>Stock Disponible</h4>
+              </div>
+              <div>
+                <ion-input v-model="product.stock_disponible" placeholder="Stock Disp.e"></ion-input>
+              </div>
+            </li>   
+          </ul>
+          <div class="content-button">
+            <ion-button @click="saveProduct">Guardar</ion-button>
+          </div>
+        </div>
       </div>
       <Ion-list>
         <ion-item>
@@ -104,8 +170,8 @@ data(){
           <ion-label>{{e.marca}}</ion-label>
           <ion-label>{{e.importado}}</ion-label>
           <ion-label>{{e.stock_disponible}}</ion-label>
-          <ion-label><ion-button @click="prepareEdit(e)" color="danger">EDIT</ion-button></ion-label>
-          <ion-button @click="deleteProduct(e._id)" color="danger">X</ion-button>
+          <ion-label><ion-button @click="prepareEdit(e)" color="primary">EDIT</ion-button></ion-label>
+          <ion-label><ion-button  @click="deleteProduct(e._id)" color="danger">x</ion-button></ion-label>
         </ion-item>    
       </ion-list>
       <div class="return-button">
@@ -121,4 +187,25 @@ data(){
 
 <style>
 
+
+.scroll-content .formshow {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scroll-content .formshow .form-content {
+  align-items: center;
+  text-align: center;
+padding: 2rem;
+border: solid;
+}
+
+.scroll-content .formshow .form-content .content-input{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 </style>
